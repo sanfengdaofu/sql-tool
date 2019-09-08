@@ -5,10 +5,11 @@ import com.anso.core.pool.SQLConnetion;
 
 import java.sql.SQLException;
 import java.util.List;
-
+//其实我应该动态代理执行阶段,sql预处理和绑定阶段应该在其他地方搞出
 public class SQLHandle {
     private SQLExecute sqlExecute;
     private DynamicDataSource dynamicDataSource;
+    //数据默认配置路径,多数据源的配置用.来切分,如果单数据源就不要切分,默认数据源前缀为default
     private static final String defaultPath = "pool/druid.properties";
     private final DataSourceChoose dataSourceChoose;
 
@@ -16,6 +17,7 @@ public class SQLHandle {
         this(defaultPath);
     }
 
+    //这里的size是你domain的数量
     public SQLHandle(String path) {
         this(path, 10);
     }
@@ -70,7 +72,7 @@ public class SQLHandle {
         dynamicDataSource.startTransaction();
     }
 
-    //准备提交
+    //准备提交,即使没开启,被人瞎操作也没事.
     public void commit() throws SQLException {
         try {
             dynamicDataSource.doCommit();
@@ -79,7 +81,7 @@ public class SQLHandle {
         }
     }
 
-    //准备回滚
+    //准备回滚,即使没先开启手动,被误操作也没事
     public void rollback() throws SQLException {
         try {
             dynamicDataSource.rollback();

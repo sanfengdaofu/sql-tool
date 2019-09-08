@@ -29,18 +29,20 @@ public class SqlTest {
                 student.setName1("aaa");
                 //设置数据源
 //                sqlHandle.setDataSource("a");
+                //插入单条,同时插入多个表,JavaBean本身的表也要填写进去
 //                sqlHandle.insertPro("insert into user (id,username) values(?,?)", student.getId(), student.getName1());
                 sqlHandle.insertPro(student);
                 list.add(student);
             }
             System.out.println("-----------------------------");
+            //手动开启事务
  /*           sqlHandle.startTransaction();
             for (int i = 0; i < 2; i++) {
-//                demo.set("a");
                 sqlHandle.insertAll(list, "a2", "a1", "a");
             }
             l = System.currentTimeMillis();
 //            int q = 10 / 0;*/
+ //手动提交事务
             sqlHandle.commit();
         } catch (Exception e) {
             e.printStackTrace();

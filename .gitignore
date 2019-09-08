@@ -26,5 +26,5 @@ hs_err_pid*
 .gitignore
 .idea/
 ansoSql.iml
-pom.xml
+
 target/
