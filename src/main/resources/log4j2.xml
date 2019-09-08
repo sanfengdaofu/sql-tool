@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <!--
+            name:定义名字
+            fileName：指定生成的日志文件
+            filePattern：指定当发生Rolling时，文件的转移和重命名规则
+            SizeBasedTriggeringPolicy：指定当文件体积大于size指定的值时，触发Rolling
+            TimeBasedTriggeringPolicy：指每过指定时间触发Rolling,这里单位默认是1天，最小单位为1小时 filePattern {MM-dd-yyyy HH}就表示小时
+            DefaultRolloverStrategy:指定最多保存的文件个数
+        -->
+        <RollingFile
+                name="RollingFile"
+                fileName="log/logerr.log"
+                filePattern="log/logderr-%d{MM-dd-yyyy}-%i.log">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="error">
+            <AppenderRef ref="RollingFile"/>
+        </Root>
+    </Loggers>
+</Configuration>
