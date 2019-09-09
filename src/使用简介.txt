@@ -5,6 +5,7 @@
 SQLHandle中可以开启事务,有startTransaction,提交和回滚对应commit 和rollback方法,不开启事务就默认提交.
 当你配置了多数据源后,可以用setDataSource这个方法来设置你想要的数据源.
 其中sqlHandle.insertAll(list, "a2", "a1", "a");这个方法,他可以传入多个表名,一个迭代器,这是可以插入各种历史表实时表的操作,其中后面的参数就指定了你要插入的表名,如果你还要插入当前javaBean对应的表也需要指定一下哦,千万别忘记!如果你什么都不传就插入默认JavaBean所对应的表
+有时间将会更新为数量过多自动开启多线程插入,经过测试,几十万的数据量开启线程的速度比单机快十几秒.
 有个sqlMapping的注解,有以下属性,使用示例在domain下,用来映射数据库的,
     boolean id() default false;      //是否为主键
 
