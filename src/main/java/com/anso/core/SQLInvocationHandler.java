@@ -47,10 +47,7 @@ public class SQLInvocationHandler implements InvocationHandler, ConnectionAction
                     Map<String, Method> methods = null;
                     //判断是否为javaBean类型
                     if (ClassIdentification.isJavaBean(result)) {
-                        objects = Cache.insertTemplate.get(result.getSimpleName());
-                        if (objects == null) {
-                            objects = sqlCreate.insertObjectConvertSQL(result);
-                        }
+                        objects = getCache(result);
                         methods = (Map<String, Method>) objects[3];
                     }
                     resultSet = sqlCreate.fastBindParam(preparedStatements, (Object[]) args[args.length - 1])[0].executeQuery();
@@ -72,9 +69,7 @@ public class SQLInvocationHandler implements InvocationHandler, ConnectionAction
                         //设置手动提交事务
                         dynamicDataSource.setNoAutoCommit();
                         clazz = list.iterator().next().getClass();
-                        objects = Cache.insertTemplate.get(clazz.getSimpleName());
-                        if (objects == null)
-                            objects = sqlCreate.insertObjectConvertSQL(clazz);
+                       objects = getCache(clazz);
                         preparedStatements = sqlCreate.getPreparedStatement(conn, SQLModel.INSERT, (String) objects[0], (String) objects[2], (String[]) args[args.length - 1]);
                         int result = 0;
                         for (PreparedStatement preparedStatement : sqlCreate.fastBindParam(preparedStatements, (Iterable) args[0], (List<Method>) objects[1])) {
@@ -91,9 +86,7 @@ public class SQLInvocationHandler implements InvocationHandler, ConnectionAction
                     try {
                         dynamicDataSource.setNoAutoCommit();
                         clazz = args[0].getClass();
-                        objects = Cache.insertTemplate.get(clazz.getSimpleName());
-                        if (objects == null)
-                            objects = sqlCreate.insertObjectConvertSQL(clazz);
+                        objects = getCache(clazz);
                         preparedStatements = sqlCreate.getPreparedStatement(conn, SQLModel.INSERT, (String) objects[0], (String) objects[2], (String[]) args[args.length - 1]);
                         int result = 0;
                         for (PreparedStatement preparedStatement : sqlCreate.fastBindParam(preparedStatements, args[0], (List<Method>) objects[1])) {
@@ -135,5 +128,12 @@ public class SQLInvocationHandler implements InvocationHandler, ConnectionAction
         return dynamicDataSource.getConnection();
     }
 
+
+    public Object[] getCache(Class clazz) throws Exception {
+        Object[] objects = Cache.insertTemplate.get(clazz.getSimpleName());
+        if (objects == null)
+            objects = sqlCreate.insertObjectConvertSQL(clazz);
+        return objects;
+    }
 
 }

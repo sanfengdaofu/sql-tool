@@ -1,0 +1,18 @@
+时间紧迫还没来得及详细整理,此工具主要优化了动态sql语句生成的插入,以及查询返回值的封装,其他sql语句仍要自己写.主要的用法在test类下,当你想使用多数据源的配置,就用xxx.url类似这样的配置,左边的将会成为你数据源的名字
+你可以配置一个default.url这样的东西,这样当你不传参的时候,他就默认使用,
+怕搞的东西太多,我就全部集成到SQLHandle类中了,你只需要new它,里头很多默认的配置,例如数据源配置的路径默认在pool/druid.properties
+构造方法中int size传入一个数字,这是根据你javaBean的数量传入的,你有10个就传十个,当然,默认是十个,你只有一个就传1个.
+SQLHandle中可以开启事务,有startTransaction,提交和回滚对应commit 和rollback方法,不开启事务就默认提交.
+当你配置了多数据源后,可以用setDataSource这个方法来设置你想要的数据源.
+其中sqlHandle.insertAll(list, "a2", "a1", "a");这个方法,他可以传入多个表名,一个迭代器,这是可以插入各种历史表实时表的操作,其中后面的参数就指定了你要插入的表名,如果你还要插入当前javaBean对应的表也需要指定一下哦,千万别忘记!如果你什么都不传就插入默认JavaBean所对应的表
+有个sqlMapping的注解,有以下属性
+    boolean id() default false;      //是否为主键
+
+    String tableName() default "";   //数据库表名
+
+    String column() default "";       //数据库列名
+
+    boolean like() default false;    //该字段是否可以模糊查询,面向对象查询需要用到，暂无此功能。
+
+    boolean ignorePacking() default false;  //是否忽略封装该字段
+

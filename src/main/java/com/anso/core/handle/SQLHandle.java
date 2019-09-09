@@ -5,6 +5,7 @@ import com.anso.core.pool.SQLConnetion;
 
 import java.sql.SQLException;
 import java.util.List;
+
 //其实我应该动态代理执行阶段,sql预处理和绑定阶段应该在其他地方搞出
 public class SQLHandle {
     private SQLExecute sqlExecute;
@@ -20,6 +21,10 @@ public class SQLHandle {
     //这里的size是你domain的数量
     public SQLHandle(String path) {
         this(path, 10);
+    }
+
+    public SQLHandle(int size) {
+        this(defaultPath, size);
     }
 
     public SQLHandle(DataSourceChoose dynamicSource) {
