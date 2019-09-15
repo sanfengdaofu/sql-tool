@@ -1,7 +1,7 @@
 package com.anso.core.conf;
 
 import com.alibaba.druid.pool.DruidDataSourceFactory;
-import com.anso.core.pool.SQLConnetion;
+import com.anso.core.pool.SQLConnection;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -30,8 +30,8 @@ public class ConfigRead {
     }
 
     //默认druid,未来考虑切换多连接池,配置规则:多数据源用.来隔开
-    public SQLConnetion getSQLConnection() throws Exception {
-        SQLConnetion sqlConnetion = new SQLConnetion();
+    public SQLConnection getSQLConnection() throws Exception {
+        SQLConnection sqlConnection = new SQLConnection();
         Set<String> names = this.p.stringPropertyNames();
         Map<String, DataSource> map = new HashMap<>();
         Map<String, Properties> moreProperties = new HashMap<>();
@@ -57,12 +57,12 @@ public class ConfigRead {
             for (Map.Entry<String, Properties> more : moreProperties.entrySet()) {
                 map.put(more.getKey(), DruidDataSourceFactory.createDataSource(more.getValue()));
             }
-            sqlConnetion.setDataSourceMap(map);
+            sqlConnection.setDataSourceMap(map);
         } else {
             //单数据源
-            sqlConnetion.setDefaultDataSource(DruidDataSourceFactory.createDataSource(this.p));
+            sqlConnection.setDefaultDataSource(DruidDataSourceFactory.createDataSource(this.p));
         }
-        return sqlConnetion;
+        return sqlConnection;
     }
 
 

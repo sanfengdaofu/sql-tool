@@ -12,8 +12,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SqlTest {
+
+
     @Test
     public void test() throws Exception {
 
@@ -27,26 +31,26 @@ public class SqlTest {
                 student.setPid(i + 1);
                 student.setId(i + 10);
                 student.setName1("aaa");
-                //设置数据源
+                //设置数据源,一定要在执行sql前设置.如果设置了手动事务,开启多线程就要注意了,连接都是根据线程环境获取的.
 //                sqlHandle.setDataSource("a");
                 //插入单条,同时插入多个表,JavaBean本身的表也要填写进去
 //                sqlHandle.insertPro("insert into user (id,username) values(?,?)", student.getId(), student.getName1());
-                sqlHandle.insertPro(student);
+//                sqlHandle.insertPro(student);
                 list.add(student);
             }
             System.out.println("-----------------------------");
             //手动开启事务
- /*           sqlHandle.startTransaction();
+            sqlHandle.startTransaction();
             for (int i = 0; i < 2; i++) {
                 sqlHandle.insertAll(list, "a2", "a1", "a");
+                sqlHandle.rollback();
+                sqlHandle.commit();
             }
             l = System.currentTimeMillis();
-//            int q = 10 / 0;*/
- //手动提交事务
-            sqlHandle.commit();
+//            int q = 10 / 0;
+            //手动提交事务
         } catch (Exception e) {
             e.printStackTrace();
-            sqlHandle.rollback();
         }
         System.out.println(System.currentTimeMillis() - l);
         System.out.println();

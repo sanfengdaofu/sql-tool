@@ -1,7 +1,7 @@
 package com.anso.core.handle;
 
 import com.anso.core.*;
-import com.anso.core.pool.SQLConnetion;
+import com.anso.core.pool.SQLConnection;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -40,7 +40,7 @@ public class SQLHandle {
     }
 
     public SQLHandle(String path, int size, DataSourceChoose dataSourceChoose) {
-        SQLConnetion sqlConnetion = new ConnectionBuildFactory(path, size).getSqlConnetion();
+        SQLConnection sqlConnection = new ConnectionBuildFactory(path, size).getSqlConnection();
         //默认处理方式,如果你有更好的什么操作的话,那就用你的,
         if (dataSourceChoose == null) {
             dataSourceChoose = new DataSourceChoose() {
@@ -63,7 +63,7 @@ public class SQLHandle {
             };
         }
         this.dataSourceChoose = dataSourceChoose;
-        this.dynamicDataSource = new DynamicDataSource(sqlConnetion, dataSourceChoose);
+        this.dynamicDataSource = new DynamicDataSource(sqlConnection, dataSourceChoose);
         this.sqlExecute = new DefaultSqlSession().getMapper(SQLExecute.class, new SQLTemplateCreate(), dynamicDataSource);
     }
 

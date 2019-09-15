@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * 数据库连接池
  */
-public class SQLConnetion {
+public class SQLConnection {
     //多数据源
     private Map<String, DataSource> dataSourceMap = null;
     //默认数据源
@@ -35,7 +35,7 @@ public class SQLConnetion {
 
     @Override
     public String toString() {
-        return "SQLConnetion{" +
+        return "SQLConnection{" +
                 "dataSourceMap=" + dataSourceMap +
                 ", defaultDataSource=" + defaultDataSource +
                 '}';

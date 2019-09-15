@@ -1,6 +1,6 @@
 package com.anso.core;
 
-import com.anso.core.pool.SQLConnetion;
+import com.anso.core.pool.SQLConnection;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -11,16 +11,16 @@ import java.sql.SQLException;
 public class DynamicDataSource {
     private static ThreadLocal<Connection> connectionThreadLocal = new ThreadLocal<>();
     private static ThreadLocal<Boolean> isAutoCommit = new ThreadLocal<>();
-    private final SQLConnetion sqlConnetion;
+    private final SQLConnection sqlConnection;
     private DataSourceChoose dataSourceChoose;
 
-    public DynamicDataSource(SQLConnetion sqlConnetion, DataSourceChoose dataSourceChoose) {
+    public DynamicDataSource(SQLConnection sqlConnection, DataSourceChoose dataSourceChoose) {
         this.dataSourceChoose = dataSourceChoose;
-        this.sqlConnetion = sqlConnetion;
+        this.sqlConnection = sqlConnection;
     }
 
     public void setConnection() throws SQLException {
-        connectionThreadLocal.set(sqlConnetion.getConn(dataSourceChoose.get()));
+        connectionThreadLocal.set(sqlConnection.getConn(dataSourceChoose.get()));
     }
 
     public Connection getConnection() throws SQLException {

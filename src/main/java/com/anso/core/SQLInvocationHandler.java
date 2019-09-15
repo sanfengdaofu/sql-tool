@@ -52,7 +52,6 @@ public class SQLInvocationHandler implements InvocationHandler, ConnectionAction
                     }
                     resultSet = sqlCreate.fastBindParam(preparedStatements, (Object[]) args[args.length - 1])[0].executeQuery();
                     return sqlCreate.fastPackingResult(resultSet, result, methods, ClassIdentification.isList(method.getReturnType()));
-
                 } else {
                     preparedStatements = sqlCreate.getPreparedStatement(conn, SQLModel.OTHER, (String) args[0], null);
                     return sqlCreate.fastBindParam(preparedStatements, (Object[]) args[args.length - 1])[0].executeUpdate();
@@ -69,7 +68,7 @@ public class SQLInvocationHandler implements InvocationHandler, ConnectionAction
                         //设置手动提交事务
                         dynamicDataSource.setNoAutoCommit();
                         clazz = list.iterator().next().getClass();
-                       objects = getCache(clazz);
+                        objects = getCache(clazz);
                         preparedStatements = sqlCreate.getPreparedStatement(conn, SQLModel.INSERT, (String) objects[0], (String) objects[2], (String[]) args[args.length - 1]);
                         int result = 0;
                         for (PreparedStatement preparedStatement : sqlCreate.fastBindParam(preparedStatements, (Iterable) args[0], (List<Method>) objects[1])) {
